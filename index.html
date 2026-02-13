@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>คำถามของเรา</title>
+<title>Quiz ความรัก</title>
 
 <style>
 body{
@@ -15,6 +15,7 @@ body{
   font-family: Arial, sans-serif;
   background: linear-gradient(135deg, #ff9eb5, #ffc2d1);
   text-align:center;
+  overflow:hidden;
 }
 
 .container{
@@ -23,8 +24,10 @@ body{
   border-radius:20px;
   backdrop-filter: blur(10px);
   box-shadow:0 8px 20px rgba(0,0,0,0.2);
-  width:80%;
+  width:90%;
   max-width:500px;
+  position:relative;
+  z-index:2;
 }
 
 h2{
@@ -33,7 +36,10 @@ h2{
 }
 
 button{
-  padding:10px 25px;
+  display:block;
+  width:100%;
+  margin:10px 0;
+  padding:12px;
   font-size:16px;
   border:none;
   border-radius:30px;
@@ -45,41 +51,98 @@ button{
 }
 
 button:hover{
-  transform:scale(1.1);
+  transform:scale(1.05);
+  background:#ffe5ec;
 }
+
+.heart{
+  position:absolute;
+  font-size:20px;
+  animation: floatUp 1.5s ease-out forwards;
+  pointer-events:none;
+}
+
+@keyframes floatUp{
+  0%{opacity:1; transform:translateY(0) scale(1);}
+  100%{opacity:0; transform:translateY(-150px) scale(1.8);}
+}
+
 </style>
 </head>
 
 <body>
 
 <div class="container">
-  <h2 id="question">กดปุ่มเพื่อเริ่มคำถาม 💕</h2>
-  <button onclick="nextQuestion()">เริ่มเลย</button>
+  <h2 id="question">กดเริ่มเพื่อทำแบบทดสอบ 💕</h2>
+  <div id="choices"></div>
+  <button onclick="startQuiz()">เริ่มเลย</button>
 </div>
+
+<!-- เสียง -->
+<audio id="clickSound" src="click.mp3"></audio>
 
 <script>
 
-const questions = [
-"1. คุณประทับใจอะไรในตัวเรามากที่สุด 💖",
-"2. วันแรกที่เราเจอกัน คุณจำอะไรได้บ้าง 😊",
-"3. ช่วงเวลาไหนที่คุณรู้สึกมีความสุขที่สุดกับเรา 🌸",
-"4. คุณชอบเรียกเราว่าอะไรที่สุด 💕",
-"5. ถ้าให้เลือก 1 คำ อธิบายความรักของเรา จะเป็นคำว่าอะไร ✨",
-"6. สิ่งเล็ก ๆ ที่เราทำแล้วทำให้คุณยิ้มได้คืออะไร 🌷",
-"7. ถ้าเราทะเลาะกัน คุณอยากให้เราทำยังไง 🤍",
-"8. คุณคิดว่าเราน่ารักตอนไหนที่สุด 😆",
-"9. อนาคตที่คุณอยากมีเราด้วย เป็นแบบไหน 🌈",
-"10. คุณจะรักเราไปอีกนานแค่ไหน 💍"
+const quiz = [
+  {
+    question: "1. คุณประทับใจอะไรในตัวเรามากที่สุด 💖",
+    choices: ["รอยยิ้ม", "ความใส่ใจ", "ความน่ารัก", "ทุกอย่างเลย"]
+  },
+  {
+    question: "2. คุณชอบช่วงเวลาไหนกับเราที่สุด 🌸",
+    choices: ["ตอนกินข้าว", "ตอนคุยก่อนนอน", "ตอนเที่ยว", "ทุกช่วงเวลา"]
+  },
+  {
+    question: "3. คุณจะรักเราไปอีกนานแค่ไหน 💞",
+    choices: ["ตลอดไป", "ไม่มีวันหมดรัก", "จนแก่เลย", "มากกว่าที่พูดได้"]
+  }
 ];
 
-let index = 0;
+let current = 0;
 
-function nextQuestion(){
-  if(index < questions.length){
-    document.getElementById("question").innerText = questions[index];
-    index++;
+function startQuiz(){
+  current = 0;
+  showQuestion();
+}
+
+function showQuestion(){
+  if(current < quiz.length){
+    document.getElementById("question").innerText = quiz[current].question;
+    let choicesDiv = document.getElementById("choices");
+    choicesDiv.innerHTML = "";
+
+    quiz[current].choices.forEach(choice => {
+      let btn = document.createElement("button");
+      btn.innerText = choice;
+      btn.onclick = (e) => {
+        playSound();
+        createHeart(e);
+        current++;
+        setTimeout(showQuestion, 600);
+      };
+      choicesDiv.appendChild(btn);
+    });
   } else {
-    document.getElementById("question").innerText = "จบแล้ว แต่ความรักของเรายังไม่จบนะ 💞";
+    document.getElementById("question").innerText = "💖 จบแล้ว แต่ความรักของเรายังไม่จบนะ 💖";
+    document.getElementById("choices").innerHTML = "";
+  }
+}
+
+function playSound(){
+  const sound = document.getElementById("clickSound");
+  sound.currentTime = 0;
+  sound.play();
+}
+
+function createHeart(e){
+  for(let i=0;i<6;i++){
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💗";
+    heart.style.left = e.clientX + (Math.random()*40-20) + "px";
+    heart.style.top = e.clientY + "px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),1500);
   }
 }
 
