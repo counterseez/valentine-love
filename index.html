@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz ความรัก</title>
+<title>Secret Love</title>
 
 <style>
 body{
@@ -17,14 +17,14 @@ body{
   text-align:center;
 }
 
-.container{
+.box{
   background: rgba(255,255,255,0.2);
   padding:40px;
   border-radius:20px;
   backdrop-filter: blur(10px);
   box-shadow:0 8px 20px rgba(0,0,0,0.2);
   width:90%;
-  max-width:500px;
+  max-width:400px;
 }
 
 h2{
@@ -32,23 +32,27 @@ h2{
   margin-bottom:20px;
 }
 
-button{
-  display:block;
-  width:100%;
-  margin:10px 0;
-  padding:12px;
-  font-size:16px;
+input{
+  padding:10px;
+  width:80%;
   border:none;
-  border-radius:30px;
+  border-radius:20px;
+  text-align:center;
+  font-size:16px;
+  margin-bottom:15px;
+}
+
+button{
+  padding:10px 25px;
+  border:none;
+  border-radius:25px;
   background:white;
   color:#ff4d6d;
   font-weight:bold;
   cursor:pointer;
-  transition:0.3s;
 }
 
 button:hover{
-  transform:scale(1.05);
   background:#ffe5ec;
 }
 </style>
@@ -56,82 +60,30 @@ button:hover{
 
 <body>
 
-<div class="container">
-  <h2 id="question">กดเริ่มเพื่อทำแบบทดสอบ 💕</h2>
-  <div id="choices"></div>
-  <button onclick="startQuiz()">เริ่มเลย</button>
+<div class="box" id="lockPage">
+  <h2>🔒 ใส่รหัสลับของความรัก</h2>
+  <input type="password" id="password" placeholder="ใส่รหัสที่นี่">
+  <br>
+  <button onclick="checkPassword()">เข้าสู่หัวใจ 💕</button>
+  <p id="error" style="color:white;"></p>
+</div>
+
+<div class="box" id="quizPage" style="display:none;">
+  <h2>💖 ยินดีต้อนรับเข้าสู่โลกของเรา 💖</h2>
+  <p style="color:white;">เซอร์ไพรส์ของคุณเริ่มแล้ว ✨</p>
 </div>
 
 <script>
 
-const quiz = [
-  {
-    question: "1. คุณประทับใจอะไรในตัวเรามากที่สุด 💖",
-    choices: ["รอยยิ้ม", "ความใส่ใจ", "ความน่ารัก", "ทุกอย่างเลย"]
-  },
-  {
-    question: "2. คุณชอบช่วงเวลาไหนกับเราที่สุด 🌸",
-    choices: ["ตอนกินข้าวด้วยกัน", "ตอนคุยกันก่อนนอน", "ตอนเที่ยวด้วยกัน", "ทุกช่วงเวลา"]
-  },
-  {
-    question: "3. ถ้าให้เลือก 1 คำอธิบายเรา จะเป็นคำว่าอะไร ✨",
-    choices: ["น่ารัก", "อบอุ่น", "ดื้อหน่อยๆ", "แฟนที่ดีที่สุด"]
-  },
-  {
-    question: "4. เวลาคิดถึงเรา คุณทำอะไร 😊",
-    choices: ["เปิดแชทดู", "ดูรูปเรา", "ยิ้มคนเดียว", "โทรหาเลย"]
-  },
-  {
-    question: "5. ถ้าเรางอน คุณจะทำยังไง 🤍",
-    choices: ["ง้อทันที", "กอดแน่นๆ", "พาไปกินของอร่อย", "บอกว่ารัก"]
-  },
-  {
-    question: "6. คุณคิดว่าเราน่ารักตอนไหน 😆",
-    choices: ["ตอนยิ้ม", "ตอนงอน", "ตอนเผลอ", "ทุกเวลา"]
-  },
-  {
-    question: "7. ถ้าไปเที่ยวด้วยกัน อยากไปที่ไหน 🌈",
-    choices: ["ทะเล", "ภูเขา", "คาเฟ่", "ไปด้วยกันที่ไหนก็ได้"]
-  },
-  {
-    question: "8. เพลงที่ทำให้นึกถึงเราคือแบบไหน 🎵",
-    choices: ["หวานๆ", "โรแมนติก", "เศร้านิดๆ", "เพลงที่เราชอบ"]
-  },
-  {
-    question: "9. อนาคตที่อยากมีเราอยู่ด้วย เป็นแบบไหน 💍",
-    choices: ["สร้างครอบครัว", "ทำงานเก็บเงินด้วยกัน", "เที่ยวรอบโลก", "อยู่ด้วยกันตลอดไป"]
-  },
-  {
-    question: "10. คุณจะรักเราไปอีกนานแค่ไหน 💞",
-    choices: ["ตลอดไป", "ไม่มีวันหมดรัก", "จนแก่เลย", "มากกว่าที่พูดได้"]
-  }
-];
+function checkPassword(){
+  const correctPassword = "1402";  // เปลี่ยนรหัสตรงนี้
+  const input = document.getElementById("password").value;
 
-let current = 0;
-
-function startQuiz(){
-  current = 0;
-  showQuestion();
-}
-
-function showQuestion(){
-  if(current < quiz.length){
-    document.getElementById("question").innerText = quiz[current].question;
-    let choicesDiv = document.getElementById("choices");
-    choicesDiv.innerHTML = "";
-
-    quiz[current].choices.forEach(choice => {
-      let btn = document.createElement("button");
-      btn.innerText = choice;
-      btn.onclick = () => {
-        current++;
-        showQuestion();
-      };
-      choicesDiv.appendChild(btn);
-    });
+  if(input === correctPassword){
+    document.getElementById("lockPage").style.display = "none";
+    document.getElementById("quizPage").style.display = "block";
   } else {
-    document.getElementById("question").innerText = "จบแล้ว 💖 แต่ความรักของเรายังไม่จบนะ";
-    document.getElementById("choices").innerHTML = "";
+    document.getElementById("error").innerText = "รหัสไม่ถูกน้า ลองใหม่อีกครั้ง 💗";
   }
 }
 
