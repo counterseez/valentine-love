@@ -2,105 +2,118 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Happy Valentine's 💕</title>
+<title>Happy Valentine's</title>
 
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #ffdde1, #ee9ca7);
+  font-family: 'Arial', sans-serif;
   text-align: center;
-  color: white;
   overflow: hidden;
+  color: white;
 }
 
-#home {
-  position: relative;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-#home img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
-
-/* เอฟเฟกต์เฟดข้อความ */
+/* ข้อความหลัก */
 h1 {
-  font-size: 42px;
+  margin-top: 40vh;
+  font-size: 40px;
   opacity: 0;
-  animation: fadeIn 3s ease forwards;
-  text-shadow: 2px 2px 15px black;
+  animation: fadeIn 3s forwards;
 }
 
 @keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
+  to { opacity: 1; }
 }
 
+/* ปุ่ม */
 button {
-  margin-top: 20px;
-  padding: 12px 30px;
+  margin-top: 30px;
+  padding: 12px 25px;
+  font-size: 18px;
   border: none;
   border-radius: 30px;
-  background: white;
-  color: #ff4d6d;
-  font-weight: bold;
-  font-size: 16px;
+  background: #ff4b6e;
+  color: white;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+/* ข้อความลับ */
+#loveText {
+  margin-top: 20px;
+  font-size: 28px;
   opacity: 0;
-  animation: fadeIn 3s ease forwards;
-  animation-delay: 2s;
+  transition: opacity 2s;
+}
+
+.show {
+  opacity: 1;
 }
 
 /* หัวใจลอย */
 .heart {
-  position: fixed;
-  top: -10px;
+  position: absolute;
+  color: pink;
+  animation: fall 6s linear infinite;
   font-size: 20px;
-  animation: fall linear infinite;
 }
 
 @keyframes fall {
-  to {
-    transform: translateY(110vh);
-  }
+  0% { transform: translateY(-10vh); }
+  100% { transform: translateY(110vh); }
 }
 </style>
 </head>
 
 <body>
 
-<div id="home">
-  <img "<a href='https://postimg.cc/t10qyMdw' target='_blank'><img src='https://i.postimg.cc/9f0rP3Dm/1771011806182.jpg' border='0' alt='1771011806182'></a>">
-  <h1>Happy Valentine's 💕</h1>
-  <button onclick="alert('รักที่สุดเลย 💖')">จุดเริ่มต้นของความรัก 💕</button>
-</div>
+<h1>Happy Valentine's 💕</h1>
+
+<button onclick="showLove()">กดเพื่อเริ่มต้น 💖</button>
+
+<div id="loveText">จุดเริ่มต้นความรัก</div>
+
+<!-- เพลง -->
+<iframe id="bgmusic"
+  width="0" height="0"
+  src="https://www.youtube.com/embed/dKpECWAtabo?enablejsapi=1&loop=1&playlist=dKpECWAtabo"
+  frameborder="0"
+  allow="autoplay">
+</iframe>
 
 <script>
+/* เล่นเพลงเมื่อแตะหน้าจอครั้งแรก */
+document.addEventListener("click", function() {
+  var iframe = document.getElementById("bgmusic");
+  iframe.src += "&autoplay=1";
+}, { once: true });
+
+/* แสดงข้อความลับ */
+function showLove() {
+  document.getElementById("loveText").classList.add("show");
+}
+
 /* สร้างหัวใจลอย */
 function createHeart() {
   const heart = document.createElement("div");
   heart.classList.add("heart");
   heart.innerHTML = "💖";
   heart.style.left = Math.random() * 100 + "vw";
-  heart.style.animationDuration = (3 + Math.random() * 5) + "s";
+  heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+  heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
   document.body.appendChild(heart);
 
   setTimeout(() => {
     heart.remove();
-  }, 8000);
+  }, 6000);
 }
 
-setInterval(createHeart, 300);
+setInterval(createHeart, 500);
 </script>
 
 </body>
