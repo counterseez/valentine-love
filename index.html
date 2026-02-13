@@ -2,110 +2,86 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>Valentine Surprise</title>
-<style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คำถามของเรา</title>
 
+<style>
 body{
   margin:0;
-  font-family: 'Arial', sans-serif;
-  text-align:center;
-  overflow:hidden;
-  background: linear-gradient(135deg, #ff4d8d, #ff99c8, #ffd6ec);
-  background-size: 300% 300%;
-  animation: gradientBG 8s ease infinite;
-}
-
-/* ไล่สีเคลื่อนไหว */
-@keyframes gradientBG {
-  0% {background-position: 0% 50%;}
-  50% {background-position: 100% 50%;}
-  100% {background-position: 0% 50%;}
-}
-
-#home{
   height:100vh;
   display:flex;
-  flex-direction:column;
   justify-content:center;
   align-items:center;
-  color:#fff;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #ff9eb5, #ffc2d1);
+  text-align:center;
 }
 
-h1{
-  font-size:48px;
-  margin:10px;
-  animation: fadeIn 2s ease-in-out;
+.container{
+  background: rgba(255,255,255,0.2);
+  padding:40px;
+  border-radius:20px;
+  backdrop-filter: blur(10px);
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+  width:80%;
+  max-width:500px;
 }
 
-.subtitle{
-  font-size:22px;
-  margin-bottom:25px;
-  animation: fadeIn 3s ease-in-out;
+h2{
+  color:white;
+  margin-bottom:20px;
 }
 
 button{
-  padding:14px 30px;
-  font-size:18px;
+  padding:10px 25px;
+  font-size:16px;
   border:none;
-  border-radius:50px;
+  border-radius:30px;
   background:white;
-  color:#ff2e63;
+  color:#ff4d6d;
   font-weight:bold;
   cursor:pointer;
   transition:0.3s;
-  box-shadow:0 5px 15px rgba(0,0,0,0.2);
 }
 
 button:hover{
   transform:scale(1.1);
-  background:#ffe6f0;
 }
-
-@keyframes fadeIn{
-  from{opacity:0; transform:translateY(20px);}
-  to{opacity:1; transform:translateY(0);}
-}
-
-/* หัวใจลอย */
-.heart{
-  position:absolute;
-  color:white;
-  animation: float 6s linear infinite;
-  opacity:0.8;
-}
-
-@keyframes float{
-  0%{transform:translateY(-10vh);opacity:1;}
-  100%{transform:translateY(110vh);opacity:0;}
-}
-
 </style>
 </head>
+
 <body>
 
-<div id="home">
-  <h1>💖 Happy Valentine’s Day 💖</h1>
-  <div class="subtitle">วันวาเลนไทน์ของเรา</div>
-  <button onclick="goNext()">จุดเริ่มต้นของความรัก</button>
+<div class="container">
+  <h2 id="question">กดปุ่มเพื่อเริ่มคำถาม 💕</h2>
+  <button onclick="nextQuestion()">เริ่มเลย</button>
 </div>
 
 <script>
 
-function goNext(){
-  alert("หน้าถัดไปใส่คำถามได้เลย 💕");
-}
+const questions = [
+"1. คุณประทับใจอะไรในตัวเรามากที่สุด 💖",
+"2. วันแรกที่เราเจอกัน คุณจำอะไรได้บ้าง 😊",
+"3. ช่วงเวลาไหนที่คุณรู้สึกมีความสุขที่สุดกับเรา 🌸",
+"4. คุณชอบเรียกเราว่าอะไรที่สุด 💕",
+"5. ถ้าให้เลือก 1 คำ อธิบายความรักของเรา จะเป็นคำว่าอะไร ✨",
+"6. สิ่งเล็ก ๆ ที่เราทำแล้วทำให้คุณยิ้มได้คืออะไร 🌷",
+"7. ถ้าเราทะเลาะกัน คุณอยากให้เราทำยังไง 🤍",
+"8. คุณคิดว่าเราน่ารักตอนไหนที่สุด 😆",
+"9. อนาคตที่คุณอยากมีเราด้วย เป็นแบบไหน 🌈",
+"10. คุณจะรักเราไปอีกนานแค่ไหน 💍"
+];
 
-/* หัวใจลอย */
-setInterval(function(){
-  var heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerHTML = "💗";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (20 + Math.random()*20) + "px";
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),6000);
-},500);
+let index = 0;
+
+function nextQuestion(){
+  if(index < questions.length){
+    document.getElementById("question").innerText = questions[index];
+    index++;
+  } else {
+    document.getElementById("question").innerText = "จบแล้ว แต่ความรักของเรายังไม่จบนะ 💞";
+  }
+}
 
 </script>
 
