@@ -76,7 +76,26 @@ button:hover {
 
 <button onclick="showLove()">กดเพื่อเริ่มต้น 💖</button>
 
-<div id="loveText">จุดเริ่มต้นความรัก</div>
+<div id="loveText" onclick="beginLove()">
+  จุดเริ่มต้นความรัก 💕
+</div>
+  <style>
+#loveText {
+  font-size: 32px;
+  margin-top: 20px;
+  opacity: 0;
+  transition: all 0.5s ease;
+  cursor: pointer;
+}
+
+.show {
+  opacity: 1;
+}
+
+.active {
+  transform: scale(1.2);
+}
+  </style>
 
 <!-- เพลง -->
 <iframe id="bgmusic"
@@ -87,18 +106,28 @@ button:hover {
 </iframe>
 
 <script>
-/* เล่นเพลงเมื่อแตะหน้าจอครั้งแรก */
-document.addEventListener("click", function() {
-  var iframe = document.getElementById("bgmusic");
-  iframe.src += "&autoplay=1";
-}, { once: true });
 
-/* แสดงข้อความลับ */
-function showLove() {
+function startLove() {
+  // ซ่อนคำถาม
+  document.getElementById("questionBox").style.display = "none";
+
+  // แสดงคำว่า จุดเริ่มต้นความรัก
   document.getElementById("loveText").classList.add("show");
 }
 
-/* สร้างหัวใจลอย */
+function beginLove() {
+
+  // ทำให้คำขยายเล็กน้อย
+  document.getElementById("loveText").classList.add("active");
+
+  // เล่นเพลง
+  var iframe = document.getElementById("bgmusic");
+  iframe.src += "&autoplay=1";
+
+  // เริ่มหัวใจลอย
+  setInterval(createHeart, 500);
+}
+
 function createHeart() {
   const heart = document.createElement("div");
   heart.classList.add("heart");
@@ -113,8 +142,8 @@ function createHeart() {
   }, 6000);
 }
 
-setInterval(createHeart, 500);
 </script>
+
 
 </body>
 </html>
