@@ -3,7 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <title>Happy Valentine's 💕</title>
+<iframe id="bgmusic"
+  width="0" height="0"
+  src="https://www.youtube.com/embed/dKpECWAtabo?enablejsapi=1&loop=1&playlist=dKpECWAtabo"
+  frameborder="0"
+  allow="autoplay">
+</iframe>
 
+<script>
+document.addEventListener("click", function() {
+  var iframe = document.getElementById("bgmusic");
+  iframe.src += "&autoplay=1";
+}, { once: true });
+</script>
 <style>
 body {
   margin: 0;
